@@ -198,6 +198,13 @@ function Listagem() {
       });
   };
 
+  const limpaHistorico = async () => {
+    await axios.delete(baseUrl + "/DeleteHistory").then((response) => {
+      setFinishedData(finishedData.filter((task) => task.id !== response.data));
+      getFinishedList();
+    });
+  };
+
   useEffect(() => {
     getList();
     getFinishedList();
@@ -406,11 +413,20 @@ function Listagem() {
       >
         <Fade in={historyModal}>
           <Box sx={historyFinished}>
-            <Typography variant="h5" mb={2} color="#fff">
-              Histórico de atividades
-            </Typography>
+            <Grid container justifyContent="space-between">
+              <Grid item>
+                <Typography variant="h5" mb={2} color="#fff">
+                  Histórico de atividades
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Button variant="outlined" onClick={() => limpaHistorico()}>
+                  Limpar histórico
+                </Button>
+              </Grid>
+            </Grid>
             <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <Table sx={{ minWidth: 500 }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
                     <TableCell>
@@ -668,7 +684,7 @@ const historyFinished = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 800,
+  width: 750,
   bgcolor: "#2b2b2b",
   border: "2px solid #000",
   boxShadow: 24,
